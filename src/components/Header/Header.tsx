@@ -12,7 +12,6 @@ export default function Header() {
     (state: RootState) => state.account
   );
 
-  console.log("Header", isAuthenticated);
   const dispatch = useDispatch();
   const handleLogoutAccount = async () => {
     try {

@@ -23,17 +23,12 @@ const accountSlice = createSlice({
   initialState,
   reducers: {
     doLoginAction: (state, action: PayloadAction<User>) => {
-      console.log("file: accountSlice.ts:26 ~ action:", action);
-      console.log(state);
       state.user = action.payload;
       state.isAuthenticated = true;
-      console.log(state);
-      console.log(initialState);
     },
     doGetAccountAction: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.isAuthenticated = true;
-      console.log(state);
     },
     doLogoutAccount: (state) => {
       state.user = {

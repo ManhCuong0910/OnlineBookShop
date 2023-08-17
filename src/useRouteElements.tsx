@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import path from "src/constants/path";
 import MainLayout from "src/layouts/MainLayout";
 import BookPage from "src/pages/BookPage";
@@ -7,25 +7,29 @@ import Login from "src/pages/Login";
 import NotFound from "src/pages/NotFound";
 import ProductList from "src/pages/ProductList";
 import Register from "src/pages/Register";
-import IsAdmin from "./components/IsAdmin";
-import ProtectedRoute from "./components/ProtectedRoute";
-// import RejectedRoute from "./components/RejectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import RejectedRoute from "./components/RejectedRoute";
+import AdminLayout from "./layouts/AdminLayout";
 import Admin from "./pages/Admin";
 import NotPermitted from "./pages/NotPermitted";
-import { useSelector } from "react-redux";
-import { RootState } from "./redux/store";
 
 export default function useRouteElements() {
-  function RejectedRoute() {
-    const { isAuthenticated } = useSelector(
-      (state: RootState) => state.account
-    );
-    console.log(isAuthenticated);
-    return (
-      <>{!isAuthenticated ? <Outlet></Outlet> : <Navigate to={path.home} />}</>
-    );
-  }
   const routeElements = useRoutes([
+    {
+      path: path.admin,
+      element: <AdminLayout />,
+      children: [
+        {
+          index: true,
+          path: path.admin,
+          element: (
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          ),
+        },
+      ],
+    },
     {
       path: path.home,
       element: <RejectedRoute />,
@@ -37,21 +41,6 @@ export default function useRouteElements() {
         {
           path: path.register,
           element: <Register />,
-        },
-      ],
-    },
-    {
-      path: path.admin,
-      element: <ProtectedRoute />,
-      children: [
-        {
-          path: path.admin,
-          index: true,
-          element: (
-            <IsAdmin>
-              <Admin />
-            </IsAdmin>
-          ),
         },
       ],
     },

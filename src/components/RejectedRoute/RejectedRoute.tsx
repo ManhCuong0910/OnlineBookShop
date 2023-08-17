@@ -1,10 +1,9 @@
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import path from "src/constants/path";
-import { RootState } from "src/redux/store";
-
-export default function RejectedRoute() {
-  const { isAuthenticated } = useSelector((state: RootState) => state.account);
+interface Props {
+  isAuthenticated?: boolean;
+}
+export default function RejectedRoute({ isAuthenticated }: Props) {
   return (
     <>{!isAuthenticated ? <Outlet></Outlet> : <Navigate to={path.home} />}</>
   );
