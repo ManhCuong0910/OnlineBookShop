@@ -6,7 +6,6 @@ import Logo from "src/assets/images/LogoTiki.png";
 import path from "src/constants/path";
 import { doLogoutAccount } from "src/redux/account/accountSlice";
 import { RootState } from "src/redux/store";
-import { clearLS } from "src/utils/auth";
 export default function Header() {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.account
@@ -15,8 +14,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const handleLogoutAccount = async () => {
     try {
-      let res = await logoutAccount();
-      res && clearLS();
+      await logoutAccount();
       dispatch(doLogoutAccount());
     } catch (error) {
       console.log(error);

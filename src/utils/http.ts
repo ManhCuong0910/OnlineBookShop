@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import config from "src/constants/config";
 import { AuthResponse } from "src/types/auth.type";
 import { getAccessTokenFromLS, setAccessTokenToLS } from "./auth";
-import { URL_LOGIN } from "src/apis/auth.api";
+import { URL_LOGIN, URL_LOGOUT } from "src/apis/auth.api";
 
 const http = axios.create({
   baseURL: config.baseUrl,
@@ -26,11 +26,6 @@ http.interceptors.request.use(
 // Add a response interceptor
 http.interceptors.response.use(
   function (response: AxiosResponse) {
-    const data = response.data as AuthResponse;
-    if (response.config.url === URL_LOGIN) {
-      setAccessTokenToLS(data.data.access_token);
-    }
-
     return response;
   },
   function (error: AxiosError) {

@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { loginAccount } from "src/apis/auth.api";
 import { doLoginAction } from "src/redux/account/accountSlice";
 import path from "src/constants/path";
+import { setAccessTokenToLS } from "src/utils/auth";
 type FieldType = {
   username: string;
   password: string;
@@ -20,6 +21,7 @@ export default function Login() {
       setIsLoading(true);
       const { username, password } = values;
       const res = await loginAccount({ username, password, delay });
+      setAccessTokenToLS(res.data.data.access_token);
       dispatch(doLoginAction(res.data.data.user));
       message.success("Đăng nhập thành công", 1);
       setIsLoading(true);

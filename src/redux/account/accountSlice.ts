@@ -5,9 +5,11 @@ import { clearLS } from "src/utils/auth";
 interface Account {
   isAuthenticated: boolean;
   user: User;
+  isLoading: boolean;
 }
 const initialState: Account = {
   isAuthenticated: false,
+  isLoading: true,
   user: {
     avatar: "",
     email: "",
@@ -24,13 +26,16 @@ const accountSlice = createSlice({
   reducers: {
     doLoginAction: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+      state.isLoading = false;
       state.isAuthenticated = true;
     },
     doGetAccountAction: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+      state.isLoading = false;
       state.isAuthenticated = true;
     },
     doLogoutAccount: (state) => {
+      clearLS();
       state.user = {
         email: "",
         phone: "",
@@ -40,6 +45,7 @@ const accountSlice = createSlice({
         id: "",
       };
       state.isAuthenticated = false;
+
       message.success("Đăng xuất thành công", 1);
     },
   },

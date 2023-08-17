@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
+import path from "src/constants/path";
 import NotPermitted from "src/pages/NotPermitted";
 import { RootState } from "src/redux/store";
 
@@ -8,7 +9,13 @@ interface Props {
 }
 const RoleBaseRoute = ({ children }: Props) => {
   const isAdminRoute = window.location.pathname.startsWith("/admin");
+  console.log(
+    "file: ProtectedRoute.tsx:12 ~ RoleBaseRoute ~ isAdminRoute:",
+    isAdminRoute
+  );
+
   const user = useSelector((state: RootState) => state.account.user);
+  console.log(user);
   const userRole = user.role;
 
   if (isAdminRoute && userRole === "ADMIN") {
@@ -20,7 +27,10 @@ const RoleBaseRoute = ({ children }: Props) => {
 
 const ProtectedRoute = ({ children }: Props) => {
   const { isAuthenticated } = useSelector((state: RootState) => state.account);
-  console.log(isAuthenticated);
+  console.log(
+    "file: ProtectedRoute.tsx:29 ~ ProtectedRoute ~ isAuthenticated:",
+    isAuthenticated
+  );
 
   return (
     <>
@@ -29,7 +39,7 @@ const ProtectedRoute = ({ children }: Props) => {
           <RoleBaseRoute>{children}</RoleBaseRoute>
         </>
       ) : (
-        <Navigate to="/login" replace />
+        <Navigate to={path.login} replace />
       )}
     </>
   );
